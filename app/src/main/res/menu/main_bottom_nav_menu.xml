@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="My Locations"
+        android:icon="@drawable/ic_location"
+        app:showAsAction="ifRoom"
+        android:id="@+id/location_screen"/>
+    <item
+        android:title="Weather"
+        android:icon="@drawable/ic_weather"
+        app:showAsAction="ifRoom"
+        android:id="@+id/weather_screen"/>
+    <item
+        android:title="Settings"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom"
+        android:id="@+id/settings_screen"/>
+
+</menu>
