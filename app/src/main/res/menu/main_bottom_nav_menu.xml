@@ -4,15 +4,18 @@
 
     <item
         android:title="My Locations"
+        android:enabled="true"
         android:icon="@drawable/ic_location"
         app:showAsAction="ifRoom"
         android:id="@+id/location_screen"/>
     <item
+        android:enabled="true"
         android:title="Weather"
         android:icon="@drawable/ic_weather"
         app:showAsAction="ifRoom"
         android:id="@+id/weather_screen"/>
     <item
+        android:enabled="true"
         android:title="Settings"
         android:icon="@drawable/ic_settings"
         app:showAsAction="ifRoom"
