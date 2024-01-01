@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentLocationBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -41,7 +42,6 @@ class LocationFragment : Fragment() {
                 previousState: SearchView.TransitionState,
                 newState: SearchView.TransitionState
             ) {
-
                 if(newState == TransitionState.SHOWING){
                     bottomNavView.visibility = View.GONE
                 }
@@ -53,6 +53,7 @@ class LocationFragment : Fragment() {
         })
 
     }
+
 
     companion object {
 

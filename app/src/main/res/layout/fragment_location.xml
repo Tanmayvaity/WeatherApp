@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.LocationFragment">
+    tools:context=".fragments.LocationFragment"
+    android:background="@color/light_grey"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
+
     <com.google.android.material.search.SearchBar
         android:id="@+id/sb_location_search"
         android:layout_width="match_parent"
@@ -14,12 +16,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:backgroundTint="@color/white_smoke"
         android:hint="Find Locations"/>
 
     <com.google.android.material.search.SearchView
         android:id="@+id/location_search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        >
+
+    </com.google.android.material.search.SearchView>
+
+    <ImageView
+        android:id="@+id/iv_gps"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/ic_gps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sb_location_search"
+        android:layout_marginTop="200dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/location_advice"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_gps"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:id="@+id/tv_location"
         />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/appCompatButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/find_location_btn_bg"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="Find My Geolocation"
+        android:textColor="@color/white_smoke"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="@id/tv_location"
+        app:layout_constraintStart_toStartOf="@id/tv_location"
+        app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

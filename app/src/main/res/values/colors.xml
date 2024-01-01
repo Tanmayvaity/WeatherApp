@@ -7,4 +7,21 @@
     <color name = "purple">#A020F0</color>
     <color name="rose">#FF007F</color>
     <color name="green">#00FF00</color>
+
+
+    <color name = "orange">#feb800</color>
+    <color name ="diff_black">#131e32</color>
+    <color name="midnight_blue">#132847</color>
+    <color name = "slate_gray">#6c788e</color>
+    <color name="corn_flower_blue">#6b9dff</color>
+    <color name = "dodger_blue">#3377ff</color>
+    <color name = "white_smoke">#f3f4f8</color>
+    <color name = "light_grey">#d4d4de</color>
+    <color name = "light_slate_grey">#90929e</color>
+    <color name = "tomato">#f56b47</color>
+
+    <color name="transparent">@android:color/transparent</color>
+
+
+
 </resources>
