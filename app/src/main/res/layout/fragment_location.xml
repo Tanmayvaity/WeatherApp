@@ -17,7 +17,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:backgroundTint="@color/white_smoke"
-        android:hint="Find Locations"/>
+        android:hint="Find Locations"
+
+        />
 
     <com.google.android.material.search.SearchView
         android:id="@+id/location_search_view"

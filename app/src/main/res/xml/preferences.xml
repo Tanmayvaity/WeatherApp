@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:key="units_category"
+        android:title="Units">
+
+        <DropDownPreference
+            android:key="degree_units"
+            android:title="Degree"
+            android:entries="@array/temperature_units"
+            android:entryValues="@array/temperature_units_values"
+            android:defaultValue="@string/Celsius"
+            app:useSimpleSummaryProvider="true"
+
+            />
+        <DropDownPreference
+            android:key="wind_units"
+            android:title="Wind"
+            android:entries="@array/wind_units"
+            android:entryValues="@array/wind_units_values"
+            android:defaultValue="m/s"
+            app:useSimpleSummaryProvider="true"
+
+            />
+
+        <DropDownPreference
+            android:key="pressure_units"
+            android:title="Pressure"
+            android:entries="@array/pressure_units"
+            android:entryValues="@array/pressure_units_values"
+            android:defaultValue="mmHg"
+            app:useSimpleSummaryProvider="true"
+
+            />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="general_category"
+        android:title="General">
+
+        <DropDownPreference
+            android:key="language"
+            android:title="Language"
+            android:entries="@array/language"
+            android:entryValues="@array/language_values"
+            android:defaultValue="ENGLISH"
+            app:useSimpleSummaryProvider="true"
+
+            />
+
+        <SwitchPreferenceCompat
+            android:key="theme"
+            android:title="Theme"
+            android:defaultValue="false"
+            android:summaryOn="Dark Mode"
+            android:summaryOff="Light Mode"
+            />
+
+        <SwitchPreferenceCompat
+            android:key="details"
+            android:title="Show Details"
+            android:defaultValue="true"
+            />
+
+    </PreferenceCategory>
+
+    <Preference
+        android:key="clear_locations"
+        android:title="Clear locations"
+        android:summary="Delete all list of locations saved"
+        app:allowDividerAbove="true"
+        />
+    <Preference
+        android:key="restore"
+        android:title="Restore to default"
+        />
+    <Preference
+        android:key="about"
+        android:title="About this app"
+        />
+    <Preference
+        android:key="devs_about"
+        android:title="Developers info"
+        />
+
+    <Preference
+        android:key="feedback"
+        android:title="Send feedback"
+        android:summary="Report technical issues or suggest new features"/>
+
+
+
+</PreferenceScreen>

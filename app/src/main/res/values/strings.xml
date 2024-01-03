@@ -3,4 +3,48 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="location_advice">Allow to track your geolocation for\n better results and save your time</string>
+    <string name="Celsius">\u2103</string>
+    <string name="Fahrenheit">\u2109</string>
+
+    <string-array name="temperature_units">
+        <item>@string/Celsius</item>
+        <item>@string/Fahrenheit</item>
+
+    </string-array>
+
+    <string-array name="temperature_units_values">
+        <item>@string/Celsius</item>
+        <item>@string/Fahrenheit</item>
+    </string-array>
+
+    <string-array name="wind_units">
+        <item>m/s</item>
+        <item>km/h</item>
+    </string-array>
+
+    <string-array name="wind_units_values">
+        <item>m/s</item>
+        <item>km/h</item>
+    </string-array>
+
+    <string-array name="pressure_units_values">
+        <item>mmHg</item>
+        <item>hPa</item>
+    </string-array>
+
+    <string-array name="pressure_units">
+        <item>mmHg</item>
+        <item>hPa</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
+
+    <string-array name="language">
+        <item>English</item>
+        <item>Hindi</item>
+        <item>Marathi</item>
+    </string-array>
 </resources>

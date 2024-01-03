@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.fragments.LocationFragment
 import com.example.weatherapp.fragments.SettingsFragment
+import com.example.weatherapp.fragments.SettingsScreen
 import com.example.weatherapp.fragments.WeatherFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
+
 
     companion object{
         const val TAG = "MainActivity"
@@ -35,9 +37,6 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         lateinit var  fragment : Fragment
         when(item.itemId){
-            R.id.settings_screen ->{
-                fragment = SettingsFragment.newInstance()
-            }
             R.id.location_screen ->{
                 fragment = LocationFragment.newInstance()
 

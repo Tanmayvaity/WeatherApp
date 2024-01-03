@@ -4,9 +4,164 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingsFragment">
+    tools:context=".fragments.SettingsFragment"
+    android:background="@color/light_grey"
+    >
+
+    <TextView
+        android:id="@+id/tv_degree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Degrees"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+
+        android:layout_marginRight="20dp"
+        android:background="@drawable/cutom_radio_group_bg"
+        android:checkedButton="@id/celsius"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/tv_degree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_degree">
+
+        <RadioButton
+            android:id="@+id/celsius"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_radio_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="\u2103" />
+
+        <RadioButton
+            android:id="@+id/fara"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_radio_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="\u2109" />
 
 
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tv_wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Wind"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_degree" />
+
+    <RadioGroup
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+
+        android:layout_marginRight="20dp"
+        android:background="@drawable/cutom_radio_group_bg"
+        android:checkedButton="@id/tv_meter_per_sec"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/tv_wind"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_wind">
+
+        <RadioButton
+            android:id="@+id/tv_meter_per_sec"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_radio_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="m/s" />
+
+        <RadioButton
+            android:id="@+id/tv_km_per_hr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_radio_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="km/h" />
+
+
+    </RadioGroup>
+    <TextView
+        android:id="@+id/tv_pressure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:text="Wind"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_wind" />
+
+    <RadioGroup
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+
+        android:layout_marginRight="20dp"
+        android:background="@drawable/cutom_radio_group_bg"
+        android:checkedButton="@id/tv_hecto_pascal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/tv_pressure"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_pressure">
+
+        <RadioButton
+            android:id="@+id/tv_mm_of_mercury"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_radio_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="mmHg" />
+
+        <RadioButton
+            android:id="@+id/tv_hecto_pascal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/custom_radio_btn_bg"
+            android:button="@null"
+            android:gravity="center"
+            android:text="hPa" />
+
+
+    </RadioGroup>
 
 
 
