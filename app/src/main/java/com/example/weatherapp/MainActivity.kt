@@ -4,12 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.weatherapp.databinding.ActivityMainBinding
 import com.example.weatherapp.fragments.LocationFragment
-import com.example.weatherapp.fragments.SettingsFragment
-import com.example.weatherapp.fragments.SettingsScreen
 import com.example.weatherapp.fragments.WeatherFragment
 
 class MainActivity : AppCompatActivity() {
@@ -47,8 +45,9 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-
-        fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit()
+        fragmentManager.commit {
+            replace(R.id.fragment_container,fragment)
+        }
         return true
     }
 }

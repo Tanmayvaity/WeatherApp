@@ -1,17 +1,13 @@
 package com.example.weatherapp.fragments
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.commit
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentLocationBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -45,10 +41,18 @@ class LocationFragment : Fragment() {
         binding.sbLocationSearch.apply {
             inflateMenu(R.menu.settings_menu)
             setOnMenuItemClickListener { item ->
-                val fm = requireActivity().supportFragmentManager
-                val transaction = fm.beginTransaction()
-                transaction.replace(R.id.fragment_container,SettingsScreen()).commit()
-                transaction.addToBackStack(SettingsScreen().javaClass.name)
+                if(item.itemId == R.id.settings_screen){
+                    val fm = requireActivity().supportFragmentManager
+
+                    fm.commit {
+                        setCustomAnimations(R.anim.slide_left,R.anim.slide_out,R.anim.fade_in,R.anim.slide_out)
+                        replace(R.id.fragment_container,SettingsScreen())
+                        addToBackStack(SettingsScreen().javaClass.name)
+                        bottomNavView.visibility = View.GONE
+                    }
+                }
+
+
                 true
             }
         }
