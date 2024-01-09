@@ -2,18 +2,234 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/some_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/light_grey"
     tools:context=".fragments.WeatherFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="weathers"
-
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_weather"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/light_grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thane"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/tv_show_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="10dp"
+            android:drawableEnd="@drawable/ic_down_arrow"
+            android:drawableTint="@color/light_slate_grey"
+            android:text="Show more"
+            android:textColor="@color/light_slate_grey"
+            android:textSize="16sp" />
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:cardBackgroundColor="@color/white_smoke"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tb_weather"
+        android:animateLayoutChanges="true"
+        android:id="@+id/weather_details_card"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Sun, 23 April, 12:05"
+                android:textColor="@color/slate_gray"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="15\u00B0"
+                android:textSize="64sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/tv_current_time"
+                app:layout_constraintTop_toBottomOf="@id/tv_current_time" />
+
+            <TextView
+                android:id="@+id/tv_weather_condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Partially Cloudy"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/tv_current_time"
+                app:layout_constraintTop_toBottomOf="@id/tv_temperature" />
+
+            <TextView
+                android:id="@+id/tv_temperature_feels_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="10dp"
+                android:text="Feels like 15\u00B0"
+                app:layout_constraintStart_toStartOf="@id/tv_current_time"
+                app:layout_constraintTop_toBottomOf="@id/tv_weather_condition" />
+
+            <ImageView
+                android:id="@+id/iv_weather"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/ic_cloudy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+            <include
+                android:id="@+id/sunrise_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/daylight_layout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_temperature_feels_like"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/daylight_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/sunset_layout"
+                android:visibility="gone"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/sunrise_layout"
+                app:layout_constraintTop_toTopOf="@id/sunrise_layout" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/sunset_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/daylight_layout"
+                app:layout_constraintTop_toTopOf="@id/daylight_layout" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/max_min_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/uv_index_layout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sunrise_layout" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/uv_index_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/pressure_layout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/max_min_layout"
+                app:layout_constraintTop_toTopOf="@id/max_min_layout" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/pressure_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/uv_index_layout"
+                app:layout_constraintTop_toTopOf="@id/max_min_layout" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/preci_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toStartOf="@+id/humidity_layout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/max_min_layout" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/humidity_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/preci_layout"
+                app:layout_constraintEnd_toStartOf="@+id/wind_layout"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/preci_layout" />
+
+            <include
+                android:visibility="gone"
+                android:id="@+id/wind_layout"
+                layout="@layout/info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/preci_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/humidity_layout"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
