@@ -9,6 +9,9 @@
     android:background="@color/light_grey"
     tools:context=".fragments.WeatherFragment">
 
+
+
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tb_weather"
         android:layout_width="match_parent"

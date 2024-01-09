@@ -1,19 +1,26 @@
 package com.example.weatherapp.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import android.window.OnBackInvokedCallback
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher
 import androidx.annotation.RequiresApi
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.example.weatherapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingsScreen : PreferenceFragmentCompat() {
+
+    private lateinit var aboutPreference: Preference
+    private lateinit var developersInfoPreference: Preference
 
 
     private val onBackPressedCallback = object : OnBackPressedCallback(true){
@@ -34,6 +41,33 @@ class SettingsScreen : PreferenceFragmentCompat() {
 
 
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        aboutPreference = findPreference<Preference>("about")!!
+        developersInfoPreference = findPreference<Preference>("devs_about")!!
+        aboutPreference.setOnPreferenceClickListener(object:Preference.OnPreferenceClickListener{
+            override fun onPreferenceClick(preference: Preference): Boolean {
+                startIntentFromUrl("https://github.com/Tanmayvaity/WeatherApp")
+                return true
+            }
+        })
+
+
+        developersInfoPreference.setOnPreferenceClickListener(object:Preference.OnPreferenceClickListener{
+            override fun onPreferenceClick(preference: Preference): Boolean {
+                startIntentFromUrl("https://github.com/Tanmayvaity/")
+                return true
+            }
+        })
+    }
+
+    private fun startIntentFromUrl(url:String){
+        val uri = Uri.parse(url)
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = uri
+        startActivity(intent)
     }
 
     companion object{
