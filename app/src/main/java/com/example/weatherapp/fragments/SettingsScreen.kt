@@ -4,15 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import androidx.preference.Preference
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import android.window.OnBackInvokedCallback
-import android.window.OnBackInvokedDispatcher
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.OnBackPressedDispatcher
-import androidx.annotation.RequiresApi
-import androidx.preference.Preference
+
 import androidx.preference.PreferenceFragmentCompat
 import com.example.weatherapp.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,22 +36,26 @@ class SettingsScreen : PreferenceFragmentCompat() {
 
 
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         aboutPreference = findPreference<Preference>("about")!!
         developersInfoPreference = findPreference<Preference>("devs_about")!!
-        aboutPreference.setOnPreferenceClickListener(object:Preference.OnPreferenceClickListener{
+        aboutPreference.setOnPreferenceClickListener(object: Preference.OnPreferenceClickListener{
             override fun onPreferenceClick(preference: Preference): Boolean {
                 startIntentFromUrl("https://github.com/Tanmayvaity/WeatherApp")
+//                val bottomSheetDialog = BottomSheetFragment()
+//                val fm = activity?.supportFragmentManager
+//
+//                bottomSheetDialog.show(fm!!,"about")
+
                 return true
             }
         })
 
 
-        developersInfoPreference.setOnPreferenceClickListener(object:Preference.OnPreferenceClickListener{
+        developersInfoPreference.setOnPreferenceClickListener(object: androidx.preference.Preference.OnPreferenceClickListener{
             override fun onPreferenceClick(preference: Preference): Boolean {
                 startIntentFromUrl("https://github.com/Tanmayvaity/")
                 return true

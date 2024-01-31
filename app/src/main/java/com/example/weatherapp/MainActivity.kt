@@ -1,5 +1,8 @@
 package com.example.weatherapp
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -30,6 +33,15 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.selectedItemId = R.id.location_screen
 
     }
+
+    override fun onStart() {
+        super.onStart()
+//        hasNetworkConnection()
+    }
+
+//    private fun hasNetworkConnection() : Boolean{
+//        val connectivityManager : ConnectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+//    }
 
     private fun fragmentNavigationLogic(item: MenuItem):Boolean{
         val fragmentManager = supportFragmentManager
