@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.weatherapp.databinding.ActivityMainBinding
@@ -31,6 +32,8 @@ class MainActivity : AppCompatActivity() {
             fragmentNavigationLogic(it)
         }
         binding.bottomNavView.selectedItemId = R.id.location_screen
+
+
 
     }
 

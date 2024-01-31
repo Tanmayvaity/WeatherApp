@@ -27,11 +27,15 @@ import androidx.core.content.ContextCompat
 import com.example.weatherapp.R
 import com.example.weatherapp.databinding.FragmentSettingsBinding
 import com.example.weatherapp.databinding.FragmentWeatherBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 
 
 class WeatherFragment : Fragment() {
 
     private lateinit var _binding: FragmentWeatherBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val binding get() = _binding
 
     private var isVisible = false
@@ -47,6 +51,8 @@ class WeatherFragment : Fragment() {
                     showRationalDialog()
                 }
             }
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
     override fun onCreateView(
@@ -65,14 +71,10 @@ class WeatherFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(TAG, "Fragment : onStart")
         checkForPermissions(requireContext())
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "Fragment : onResume")
-    }
+
 
     private fun checkForPermissions(context: Context) {
         when {
@@ -80,12 +82,19 @@ class WeatherFragment : Fragment() {
                 context,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
+                fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY,null).addOnSuccessListener {
+                    location ->
+                    val lat = location.latitude
+                    val long = location.longitude
+                    Log.d(TAG, "lat $lat long $long")
+                }
                 Log.d(TAG,"permission granted lol")
+
             }
            shouldShowRequestPermissionRationale(
                Manifest.permission.ACCESS_COARSE_LOCATION
            )->{
-
+               Log.d(TAG, "why here")
 
 //               showRationalDialog()
            }
