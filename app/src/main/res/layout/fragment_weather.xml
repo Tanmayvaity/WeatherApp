@@ -41,6 +41,7 @@
         >
 
         <LinearLayout
+            android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -61,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_weather_conditions"
-                android:text="Smoke"
+                tools:text="Smoke"
                 android:textSize="18sp"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -170,6 +171,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_cloud_percent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Very High"
@@ -209,9 +211,10 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_humidity_percent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="35%"
+                            tools:text="35%"
                             android:layout_gravity="center"
                             android:textColor="@color/white"
                             android:textSize="20sp"
@@ -260,9 +263,10 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_wind_speed"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0 km/h"
+                            tools:text="0 km/h"
                             android:layout_gravity="center"
                             android:textColor="@color/white"
                             android:textSize="20sp"
@@ -299,6 +303,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_pressure"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="1015.9 mb"
@@ -319,6 +324,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="5dp"
+                android:layout_gravity="center"
                 >
 
                 <com.google.android.material.card.MaterialCardView
@@ -350,6 +356,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_visibility"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="8.05km"
@@ -374,6 +381,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp"
+                        android:id="@+id/rain_container"
                         >
 
                         <TextView
@@ -389,6 +397,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_rain"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3.16"
@@ -417,12 +426,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="10dp"
+                    android:id="@+id/snow_container"
                     >
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pressure"
+                        android:text="Snow"
                         android:textColor="@color/light_grey"
                         android:layout_gravity="center_horizontal"
                         android:drawableStart="@drawable/ic_pressure"
@@ -432,9 +442,10 @@
                         />
 
                     <TextView
+                        android:id="@+id/tv_snow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1015.9 mb"
+                        tools:text="1015.9 mb"
                         android:layout_gravity="center"
                         android:textColor="@color/white"
                         android:textSize="20sp"
@@ -477,6 +488,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_sunrise"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="7:13 am"
@@ -517,6 +529,7 @@
                             />
 
                         <TextView
+                            android:id="@+id/tv_sunset"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="6:30 pm"
@@ -547,6 +560,7 @@
     </ScrollView>
 
     <ProgressBar
+        android:id="@+id/progressbar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
