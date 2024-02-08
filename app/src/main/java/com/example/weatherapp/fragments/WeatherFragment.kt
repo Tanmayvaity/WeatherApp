@@ -26,6 +26,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -97,9 +98,12 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        (activity as AppCompatActivity).setSupportActionBar(binding.tbWeather)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         checkForPermissions(requireContext())
 
 
@@ -140,7 +144,8 @@ class WeatherFragment : Fragment() {
 
     }
 
-    private suspend fun startCoroutineToFetchData(lat:Double,long:Double,apiKey:String):Weather?{
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun startCoroutineToFetchData(lat:Double, long:Double, apiKey:String):Weather?{
         var  weather : Weather? = null
         val response = try{
             WeatherApiInstance.api.getWeather(lat,long,apiKey)
@@ -163,6 +168,10 @@ class WeatherFragment : Fragment() {
              weather = response.body()
             Log.d(TAG,"$weather")
 
+
+            withContext(Dispatchers.Main){
+                binding.llContainer.isVisible = true
+            }
             setWeatherData(weather)
 
         }else{
@@ -181,6 +190,7 @@ class WeatherFragment : Fragment() {
     private suspend fun setWeatherData(weather: Weather?) {
         withContext(Dispatchers.Main){
             weather?.let{weather ->
+                binding.tvTemperature.text = "${weather.main.temp.toString().toCelsius()}\u00B0"
                 binding.tvWeatherConditions.text = weather.weather[0].weatherCondition.toString()
                 Log.d(TAG,"${weather.clouds.cloudPercent}")
                 binding.tvCloudPercent.text = when(weather.clouds.cloudPercent){
@@ -230,7 +240,7 @@ class WeatherFragment : Fragment() {
 
     private fun String.toCelsius():String {
         val celsius = (this.toDouble()-273.15)
-        return String.format("%.2f",celsius)
+        return celsius.toLong().toString()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
