@@ -169,10 +169,13 @@ class WeatherFragment : Fragment() {
             Log.d(TAG,"$weather")
 
 
+
+            setWeatherData(weather)
+
             withContext(Dispatchers.Main){
                 binding.llContainer.isVisible = true
+                binding.tvToolbar.isVisible = true
             }
-            setWeatherData(weather)
 
         }else{
             Log.e(TAG,"Response not successful")
@@ -190,6 +193,7 @@ class WeatherFragment : Fragment() {
     private suspend fun setWeatherData(weather: Weather?) {
         withContext(Dispatchers.Main){
             weather?.let{weather ->
+                binding.tvToolbar.text = weather.name.toString()
                 binding.tvTemperature.text = "${weather.main.temp.toString().toCelsius()}\u00B0"
                 binding.tvWeatherConditions.text = weather.weather[0].weatherCondition.toString()
                 Log.d(TAG,"${weather.clouds.cloudPercent}")
