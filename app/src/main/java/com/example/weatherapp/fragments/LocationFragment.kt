@@ -1,5 +1,6 @@
 package com.example.weatherapp.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
 import com.example.weatherapp.R
+import com.example.weatherapp.activities.SettingsActivity
 import com.example.weatherapp.databinding.FragmentLocationBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.search.SearchView
@@ -42,14 +44,19 @@ class LocationFragment : Fragment() {
             inflateMenu(R.menu.settings_menu)
             setOnMenuItemClickListener { item ->
                 if(item.itemId == R.id.settings_screen){
-                    val fm = requireActivity().supportFragmentManager
 
-                    fm.commit {
-                        setCustomAnimations(R.anim.slide_left,R.anim.slide_out,R.anim.fade_in,R.anim.slide_out)
-                        replace(R.id.fragment_container,SettingsScreen())
-                        addToBackStack(SettingsScreen().javaClass.name)
-                        bottomNavView.visibility = View.GONE
-                    }
+                    val settingsIntent = Intent(requireContext(),SettingsActivity::class.java)
+                    startActivity(settingsIntent)
+//                    val fm = requireActivity().supportFragmentManager
+//
+//                    fm.commit {
+//                        setCustomAnimations(R.anim.slide_left,R.anim.slide_out,R.anim.fade_in,R.anim.slide_out)
+//                        replace(R.id.fragment_container,SettingsScreen())
+//                        addToBackStack(SettingsScreen().javaClass.name)
+//                        bottomNavView.visibility = View.GONE
+
+
+//                    }
                 }
 
 

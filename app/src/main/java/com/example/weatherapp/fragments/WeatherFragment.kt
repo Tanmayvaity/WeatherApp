@@ -205,6 +205,7 @@ class WeatherFragment : Fragment() {
                     else -> "Overcast"
 
                 }
+
                 binding.tvHumidityPercent.text = "${weather.main.humidity.toString()}%"
                 binding.tvVisibility.text = "${weather.visibility.toDouble()/1000} km"
                 binding.tvWindSpeed.text = "${weather.wind.speed} m/sec"

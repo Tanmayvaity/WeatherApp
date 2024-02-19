@@ -8,9 +8,11 @@ import androidx.preference.Preference
 import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.viewModels
 
 import androidx.preference.PreferenceFragmentCompat
 import com.example.weatherapp.R
+import com.example.weatherapp.viewmodels.MainActivityViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SettingsScreen : PreferenceFragmentCompat() {
@@ -19,23 +21,9 @@ class SettingsScreen : PreferenceFragmentCompat() {
     private lateinit var developersInfoPreference: Preference
 
 
-    private val onBackPressedCallback = object : OnBackPressedCallback(true){
-        override fun handleOnBackPressed() {
-            Log.d(TAG,"back pressed in settings screen")
-            val bottomNavView = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav_view)
-            requireActivity().supportFragmentManager.popBackStack()
-            bottomNavView.visibility = View.VISIBLE
-
-        }
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences,rootKey)
-
-        requireActivity().onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
-
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
