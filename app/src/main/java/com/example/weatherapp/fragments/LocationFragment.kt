@@ -83,7 +83,9 @@ class LocationFragment : Fragment() {
             }
         })
 
-
+        binding.appCompatButton.setOnClickListener{
+            Log.d(TAG,"clicked")
+        }
 
     }
 
@@ -99,5 +101,9 @@ class LocationFragment : Fragment() {
 
         fun newInstance() = LocationFragment()
 
+    }
+
+    override fun toString(): String {
+        return "LocationFragment"
     }
 }

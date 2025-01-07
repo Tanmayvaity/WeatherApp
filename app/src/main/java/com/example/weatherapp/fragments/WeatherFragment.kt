@@ -1,46 +1,35 @@
 package com.example.weatherapp.fragments
 
 import android.Manifest
-import android.animation.LayoutTransition
-import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
-
 import android.os.Bundle
 import android.provider.Settings
-import android.transition.TransitionManager
-import android.transition.Visibility
 import android.util.Log
-import android.util.Log.i
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.weatherapp.Keys
-
-import com.example.weatherapp.R
 import com.example.weatherapp.api.WeatherApiInstance
-import com.example.weatherapp.databinding.FragmentSettingsBinding
 import com.example.weatherapp.databinding.FragmentWeatherBinding
 import com.example.weatherapp.models.Weather
+import com.example.weatherapp.viewmodels.WeatherFragmentViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
@@ -54,8 +43,6 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -69,24 +56,34 @@ class WeatherFragment : Fragment() {
     private lateinit var _binding: FragmentWeatherBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var weatherInformation: Weather? = null
-
+    private val weatherFragmentViewModel:WeatherFragmentViewModel by viewModels()
     private val binding get() = _binding
-
-    private var isVisible = false
+    private var weather : Weather? = null
+    private var id:Int = 0
+    private var call = true
     private lateinit var locationRequestPermissionLauncher: ActivityResultLauncher<String>
 
-    override fun onAttach(context: Context) {
+   override fun onAttach(context: Context) {
         super.onAttach(context)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         locationRequestPermissionLauncher =
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
                 if (isGranted) {
                     Log.d(TAG, "location permission granted")
+                    checkForPermissions(requireContext())
                 } else {
                     showRationalDialog()
                 }
             }
 
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+       Log.d(TAG,"WeatherFragment:onAttach")
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d(TAG,"WeatherFragment:onCreate")
+
     }
 
     override fun onCreateView(
@@ -94,6 +91,7 @@ class WeatherFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        Log.d(TAG,"WeatherFragment:onCreateView")
         _binding = FragmentWeatherBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -104,44 +102,61 @@ class WeatherFragment : Fragment() {
 
         (activity as AppCompatActivity).setSupportActionBar(binding.tbWeather)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        Log.d(TAG,"WeatherFragment:onViewCreated")
+
         checkForPermissions(requireContext())
-
-
-
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d(TAG,"Fragment:onCreate")
+    private fun checkForPermissions(context: Context) {
+        when {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                binding.progressbar.isVisible = true
+                fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY,null).addOnSuccessListener {
+                        location ->
+                    if(location!=null){
+                        val lat = location.latitude
+                        val long = location.longitude
+                        Log.d(TAG, "lat $lat long $long")
+                        fetchData(lat,long)
+                    }else{
+                        Toast.makeText(requireContext(),"turn on the location of your device",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                Log.d(TAG,"ACCESS_COARSE_LOCATION : permission granted ")
+            }
+            shouldShowRequestPermissionRationale(
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )->{
+                Log.d(TAG, "rationale dialog")
+                showRationalDialog()
+            }
+            else ->{
+                locationRequestPermissionLauncher.launch(
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            }
+        }
     }
 
-    override fun onStart() {
-        super.onStart()
 
-    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun fetchData(lat:Double, long:Double){
-
-        var weather : Weather? = null
-
         val supervisorJob = SupervisorJob()
 
-
-        binding.progressbar.isVisible = true
+//        binding.progressbar.isVisible = true
         lifecycleScope.launch(Dispatchers.IO + supervisorJob) {
              val weatherInfo : Deferred<Weather?> = async {
                  startCoroutineToFetchData(lat, long, Keys.weatherApiKey)
-
-
              }
-
             weather = weatherInfo.await()
-
             setWeatherData(weather)
-
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -162,75 +177,72 @@ class WeatherFragment : Fragment() {
             Log.e(TAG,"unexpected response")
             return null
         }
-
         if(response.isSuccessful && response.body()!=null){
             Log.d(TAG,"${response.raw().request.url}")
              weather = response.body()
             Log.d(TAG,"$weather")
-
-
-
             setWeatherData(weather)
-
             withContext(Dispatchers.Main){
                 binding.llContainer.isVisible = true
                 binding.tvToolbar.isVisible = true
             }
-
         }else{
             Log.e(TAG,"Response not successful")
         }
-
         withContext(Dispatchers.Main){
             binding.progressbar.isVisible = false
         }
-
         return weather
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private suspend fun setWeatherData(weather: Weather?) {
         withContext(Dispatchers.Main){
-            weather?.let{weather ->
-                binding.tvToolbar.text = weather.name.toString()
-                binding.tvTemperature.text = "${weather.main.temp.toString().toCelsius()}\u00B0"
-                binding.tvWeatherConditions.text = weather.weather[0].weatherCondition.toString()
-                Log.d(TAG,"${weather.clouds.cloudPercent}")
-                binding.tvCloudPercent.text = when(weather.clouds.cloudPercent){
-                    in 0 until 10 -> "Clear Sky"
-                    in 10 until 20 -> "Mostly Clear"
-                    in 20 until 50 -> "Partly Cloudy"
-                    in 50 until 80 -> "Mostly Cloudy"
-                    else -> "Overcast"
+            if(weather!=null){
+                setData(weather)
+            }
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setData(weather:Weather){
+        binding.tvToolbar.text = weather.name.toString()
+        binding.tvTemperature.text = "${weather.main.temp.toString().toCelsius()}\u00B0"
+        binding.tvWeatherConditions.text = weather.weather[0].weatherCondition.toString()
+        Log.d(TAG,"${weather.clouds.cloudPercent}")
+        binding.tvCloudPercent.text = when(weather.clouds.cloudPercent){
+            in 0 until 10 -> "Clear Sky"
+            in 10 until 20 -> "Mostly Clear"
+            in 20 until 50 -> "Partly Cloudy"
+            in 50 until 80 -> "Mostly Cloudy"
+            else -> "Overcast"
+        }
 
-                }
+        binding.tvHumidityPercent.text = "${weather.main.humidity.toString()}%"
+        binding.tvVisibility.text = "${weather.visibility.toDouble()/1000} km"
+        binding.tvWindSpeed.text = "${weather.wind.speed} m/sec"
+        binding.tvPressure.text = "${weather.main.pressure} hPa"
+        if(weather.rain?.volumeForOneHour != null){
+            binding.tvRain.text = "${weather.rain.volumeForOneHour}"
+        }else{
+            binding.rainContainer.isVisible = false
+        }
 
-                binding.tvHumidityPercent.text = "${weather.main.humidity.toString()}%"
-                binding.tvVisibility.text = "${weather.visibility.toDouble()/1000} km"
-                binding.tvWindSpeed.text = "${weather.wind.speed} m/sec"
-                binding.tvPressure.text = "${weather.main.pressure} hPa"
-                if(weather.rain?.volumeForOneHour != null){
-                    binding.tvRain.text = "${weather.rain.volumeForOneHour}"
-                }else{
-                    binding.rainContainer.isVisible = false
-                }
-
-                if(weather.snow?.volumeForOneHour != null){
-                    binding.tvSnow.text = "${weather.snow.volumeForOneHour}"
-                }else{
-                    binding.snowContainer.isVisible = false
-                }
+        if(weather.snow?.volumeForOneHour != null){
+            binding.tvSnow.text = "${weather.snow.volumeForOneHour}"
+        }else{
+            binding.snowContainer.isVisible = false
+        }
 
 //                val value = weather.sys.sunrise.toString().toDate().formatTo("HH:mm a")
 
 
-                val sunriseTime = weather.sys.sunrise.convertUnixUTCTimeToString()
-                val sunsetTime = weather.sys.sunset.convertUnixUTCTimeToString()
-                binding.tvSunrise.text = sunriseTime.toString()
-                binding.tvSunset.text = sunsetTime.toString()
+        val sunriseTime = weather.sys.sunrise.convertUnixUTCTimeToString()
+        val sunsetTime = weather.sys.sunset.convertUnixUTCTimeToString()
+        binding.tvSunrise.text = sunriseTime.toString()
+        binding.tvSunset.text = sunsetTime.toString()
 
-                binding.tvFeelsLike.text = "Feels Like ${weather.main.feelsLike.toString().toCelsius()}\u00B0"
+        binding.tvFeelsLike.text = "Feels Like ${weather.main.feelsLike.toString().toCelsius()}\u00B0"
 
 //                val isoDateFormat = DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(weather.sys.sunrise.toLong()))
 
@@ -238,9 +250,6 @@ class WeatherFragment : Fragment() {
 //                val outputFormatter : DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm a",Locale.ENGLISH)
 //                val date : LocalDateTime = LocalDateTime.parse(isoDateFormat.toString(),inputFormatter)
 //                val formattedDate : String  = outputFormatter.format(date)
-
-            }
-        }
     }
 
     private fun String.toCelsius():String {
@@ -258,48 +267,6 @@ class WeatherFragment : Fragment() {
 
         return formattedString
     }
-
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun checkForPermissions(context: Context) {
-        when {
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY,null).addOnSuccessListener {
-                    location ->
-                    if(location!=null){
-                        val lat = location.latitude
-                        val long = location.longitude
-                        Log.d(TAG, "lat $lat long $long")
-
-                        fetchData(lat,long)
-
-
-                    }else{
-                        Toast.makeText(requireContext(),"turn on the location of your device",Toast.LENGTH_SHORT).show()
-                    }
-
-                }
-                Log.d(TAG,"permission granted lol")
-
-            }
-           shouldShowRequestPermissionRationale(
-               Manifest.permission.ACCESS_COARSE_LOCATION
-           )->{
-               Log.d(TAG, "why here")
-
-//               showRationalDialog()
-           }
-            else ->{
-                locationRequestPermissionLauncher.launch(
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            }
-        }
-    }
-
 
     private fun showRationalDialog() {
         val rationalDialog = AlertDialog.Builder(requireContext())
@@ -323,13 +290,6 @@ class WeatherFragment : Fragment() {
             .show()
     }
 
-
-    override fun onDestroy() {
-        Log.d(TAG, "Fragment : onDestroy")
-        super.onDestroy()
-
-    }
-
     fun String.toDate(dateFormat: String = "HH:mm a", timeZone: TimeZone = TimeZone.getTimeZone("UTC")): Date {
         val parser = SimpleDateFormat(dateFormat, Locale.getDefault())
         parser.timeZone = timeZone
@@ -346,7 +306,13 @@ class WeatherFragment : Fragment() {
     companion object {
 
         const val TAG = "WeatherFragment"
+        const val WEATHER_DATA_TAG = "WeatherData"
         fun newInstance() = WeatherFragment()
+
+    }
+
+    override fun toString(): String {
+        return "WeatherFragment"
 
     }
 }

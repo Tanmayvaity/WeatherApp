@@ -2,6 +2,7 @@ package com.example.weatherapp.models
 
 import android.graphics.drawable.AdaptiveIconDrawable
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Weather(
     val coord : Coord,
@@ -19,46 +20,46 @@ data class Weather(
     val id : Long,
     val name : String,
     val cod:Int
-)
+):Serializable
 
 data class Wind(
     val speed:Double,
     @SerializedName("deg")
     val degree:Int,
     val gust:Double
-)
+):Serializable
 
 data class Rain(
     @SerializedName("1h")
     val volumeForOneHour:Double?,
     @SerializedName("3h")
     val volumeForThreeHour: Double?
-)
+):Serializable
 data class Cloud(
     @SerializedName("all")
     val cloudPercent:Int
-)
+):Serializable
 data class Snow(
     @SerializedName("1h")
     val volumeForOneHour: Double?,
     @SerializedName("3h")
     val volumeFOrThreeHour:Double?
-)
+):Serializable
 
 data class Sys(
     @SerializedName("country")
     val countryCode:String,
     val sunrise:String,
     val sunset:String
-)
-data class Coord(val lon:Double,val lat:Double)
+):Serializable
+data class Coord(val lon:Double,val lat:Double):Serializable
 data class WeatherX(
     val id:Int,
     @SerializedName("main")
     val weatherCondition:String,
     val description:String,
     val icon:String
-)
+):Serializable
 
 data class Main(
     val temp : Double,
@@ -74,6 +75,6 @@ data class Main(
     val seaLevel:Int,
     @SerializedName("grnd_level")
     val groundLevel:Int
-)
+):Serializable
 
 
