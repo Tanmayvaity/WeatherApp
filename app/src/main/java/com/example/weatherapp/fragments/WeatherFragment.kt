@@ -33,6 +33,7 @@ import com.example.weatherapp.viewmodels.WeatherFragmentViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -106,6 +107,10 @@ class WeatherFragment : Fragment() {
         Log.d(TAG,"WeatherFragment:onViewCreated")
 
         checkForPermissions(requireContext())
+
+        binding.refresh.setOnRefreshListener {
+            checkForPermissions(requireContext())
+        }
     }
 
     private fun checkForPermissions(context: Context) {
@@ -114,7 +119,7 @@ class WeatherFragment : Fragment() {
                 context,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED -> {
-                binding.progressbar.isVisible = true
+                binding.refresh.isRefreshing = true
                 fusedLocationClient.getCurrentLocation(Priority.PRIORITY_BALANCED_POWER_ACCURACY,null).addOnSuccessListener {
                         location ->
                     if(location!=null){
@@ -149,7 +154,7 @@ class WeatherFragment : Fragment() {
     private  fun fetchData(lat:Double, long:Double){
         val supervisorJob = SupervisorJob()
 
-//        binding.progressbar.isVisible = true
+
         lifecycleScope.launch(Dispatchers.IO + supervisorJob) {
              val weatherInfo : Deferred<Weather?> = async {
                  startCoroutineToFetchData(lat, long, Keys.weatherApiKey)
@@ -162,19 +167,26 @@ class WeatherFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun startCoroutineToFetchData(lat:Double, long:Double, apiKey:String):Weather?{
         var  weather : Weather? = null
+        withContext(Dispatchers.Main){
+            binding.progressbar.isVisible = false
+            binding.refresh.isRefreshing = true
+        }
         val response = try{
             WeatherApiInstance.api.getWeather(lat,long,apiKey)
         }catch (e:IOException){
             withContext(Dispatchers.Main){
                 binding.progressbar.isVisible = false
+                binding.refresh.isRefreshing = false
+               Toast.makeText(requireContext(),"No Internet Connection",Toast.LENGTH_SHORT).show()
             }
-            Log.e(TAG,"something wrong with internet connection")
+            Log.e(TAG,"No internet Connection")
             return null
         }catch (e: HttpException){
             withContext(Dispatchers.Main){
                 binding.progressbar.isVisible = false
+                binding.refresh.isRefreshing = false
             }
-            Log.e(TAG,"unexpected response")
+            Log.e(TAG,"Exception for an unexpected, non-2xx HTTP response")
             return null
         }
         if(response.isSuccessful && response.body()!=null){
@@ -191,6 +203,7 @@ class WeatherFragment : Fragment() {
         }
         withContext(Dispatchers.Main){
             binding.progressbar.isVisible = false
+            binding.refresh.isRefreshing = false
         }
         return weather
     }
@@ -209,7 +222,7 @@ class WeatherFragment : Fragment() {
         binding.tvToolbar.text = weather.name.toString()
         binding.tvTemperature.text = "${weather.main.temp.toString().toCelsius()}\u00B0"
         binding.tvWeatherConditions.text = weather.weather[0].weatherCondition.toString()
-        Log.d(TAG,"${weather.clouds.cloudPercent}")
+        Log.d(TAG,"Clouds percent : ${weather.clouds.cloudPercent}")
         binding.tvCloudPercent.text = when(weather.clouds.cloudPercent){
             in 0 until 10 -> "Clear Sky"
             in 10 until 20 -> "Mostly Clear"

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/some_container"
+    android:id="@+id/refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
@@ -10,150 +10,425 @@
     tools:context=".fragments.WeatherFragment"
 
     >
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_weather"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:visibility="gone"
-            android:layout_marginStart="25dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Shivaji Nagar"
-            android:textSize="22sp"
-            android:textColor="@color/white"
-            android:drawablePadding="5dp"
-            android:drawableEnd="@drawable/ic_location"
-            android:drawableTint="@color/white"
-            android:id="@+id/tv_toolbar"
-            />
-
-    </androidx.appcompat.widget.Toolbar>
-
-    <ScrollView
-        android:id="@+id/sv_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tb_weather"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
-
-        <LinearLayout
-            android:id="@+id/ll_container"
-            android:visibility="gone"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_weather"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="10dp"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:visibility="gone"
+                android:layout_marginStart="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shivaji Nagar"
+                android:textSize="22sp"
+                android:textColor="@color/white"
+                android:drawablePadding="5dp"
+                android:drawableEnd="@drawable/ic_location"
+                android:drawableTint="@color/white"
+                android:id="@+id/tv_toolbar"
+                />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:id="@+id/sv_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_weather"
+            app:layout_constraintBottom_toBottomOf="parent"
             >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_temperature"
-                android:text="23\u00B0"
-                android:textColor="@color/white"
-                android:textSize="64sp"
-                />
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_weather_conditions"
-                tools:text="Smoke"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_feels_like"
-                android:text="Feels Like 23\u00B0"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_marginTop="25dp"
-                android:textStyle="bold"
-                />
-
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
+                android:id="@+id/ll_container"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:cardBackgroundColor="@color/transparent"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="0dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?attr/selectableItemBackground"
+                android:orientation="vertical"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="10dp"
                 >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_temperature"
+                    android:text="23\u00B0"
+                    android:textColor="@color/white"
+                    android:textSize="64sp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_weather_conditions"
+                    tools:text="Smoke"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_feels_like"
+                    android:text="Feels Like 23\u00B0"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:layout_marginTop="25dp"
+                    android:textStyle="bold"
+                    />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    app:cardBackgroundColor="@color/transparent"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="0dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="AQI"
+                            android:paddingTop="10dp"
+                            android:textColor="@color/light_grey"
+                            android:layout_gravity="center"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Moderate(162)"
+                            android:layout_marginBottom="8dp"
+                            android:textColor="@color/white"
+                            android:layout_gravity="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+
+                            />
+                        <ProgressBar
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:padding="10dp"
+                            android:layout_gravity="center"
+                            android:progress="3"
+                            android:progressTint="@color/white"
+                            android:scaleY="2"
+                            android:max="5"
+                            android:progressBackgroundTint="@color/light_grey"
+                            />
+
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     >
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="AQI"
-                        android:paddingTop="10dp"
-                        android:textColor="@color/light_grey"
-                        android:layout_gravity="center"
-                        android:textSize="16sp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Moderate(162)"
-                        android:layout_marginBottom="8dp"
-                        android:textColor="@color/white"
-                        android:layout_gravity="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
+                        app:cardBackgroundColor="@color/transparent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="5dp"
 
-                        />
-                    <ProgressBar
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_width="match_parent"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Clouds %"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableStart="@drawable/ic_cloud"
+                                android:drawableTint="@color/light_grey"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_cloud_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Very High"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:padding="10dp"
-                        android:layout_gravity="center"
-                        android:progress="3"
-                        android:progressTint="@color/white"
-                        android:scaleY="2"
-                        android:max="5"
-                        android:progressBackgroundTint="@color/light_grey"
-                        />
+                        app:cardBackgroundColor="@color/transparent"
+                        android:layout_weight="1"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Humidity"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableStart="@drawable/ic_humidity"
+                                android:drawableTint="@color/light_grey"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_humidity_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="35%"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
 
 
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
+                    >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/transparent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="5dp"
+
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Wind"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableStart="@drawable/ic_uv_index"
+                                android:drawableTint="@color/light_grey"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_wind_speed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:text="0 km/h"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/transparent"
+                        android:layout_weight="1"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pressure"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableStart="@drawable/ic_pressure"
+                                android:drawableTint="@color/light_grey"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_pressure"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="1015.9 mb"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    >
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/transparent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="5dp"
+
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Visibility"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableStart="@drawable/ic_eye"
+                                android:drawableTint="@color/light_grey"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_visibility"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="8.05km"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/transparent"
+                        android:layout_weight="1"
+                        >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="10dp"
+                            android:id="@+id/rain_container"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rain"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableStart="@drawable/ic_humidity"
+                                android:drawableTint="@color/light_grey"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_rain"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="3.16"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
 
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/transparent"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="5dp"
-
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
                     >
 
                     <LinearLayout
@@ -161,144 +436,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="10dp"
+                        android:id="@+id/snow_container"
                         >
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Clouds %"
-                            android:textColor="@color/light_grey"
-                            android:layout_gravity="center_horizontal"
-                            android:drawableStart="@drawable/ic_cloud"
-                            android:drawableTint="@color/light_grey"
-                            android:drawablePadding="5dp"
-                            android:padding="5dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_cloud_percent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Very High"
-                            android:layout_gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/transparent"
-                    android:layout_weight="1"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Humidity"
-                            android:textColor="@color/light_grey"
-                            android:layout_gravity="center_horizontal"
-                            android:drawableStart="@drawable/ic_humidity"
-                            android:drawableTint="@color/light_grey"
-                            android:drawablePadding="5dp"
-                            android:padding="5dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_humidity_percent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="35%"
-                            android:layout_gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                >
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/transparent"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="5dp"
-
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Wind"
-                            android:textColor="@color/light_grey"
-                            android:layout_gravity="center_horizontal"
-                            android:drawableStart="@drawable/ic_uv_index"
-                            android:drawableTint="@color/light_grey"
-                            android:drawablePadding="5dp"
-                            android:padding="5dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_wind_speed"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="0 km/h"
-                            android:layout_gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/transparent"
-                    android:layout_weight="1"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pressure"
+                            android:text="Snow"
                             android:textColor="@color/light_grey"
                             android:layout_gravity="center_horizontal"
                             android:drawableStart="@drawable/ic_pressure"
@@ -308,10 +452,10 @@
                             />
 
                         <TextView
-                            android:id="@+id/tv_pressure"
+                            android:id="@+id/tv_snow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1015.9 mb"
+                            tools:text="1015.9 mb"
                             android:layout_gravity="center"
                             android:textColor="@color/white"
                             android:textSize="20sp"
@@ -320,265 +464,128 @@
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
-
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_gravity="center"
-                >
-
                 <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardBackgroundColor="@color/transparent"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="5dp"
-
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
                     >
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
                         android:padding="10dp"
                         >
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:text="Visibility"
-                            android:textColor="@color/light_grey"
-                            android:layout_gravity="center_horizontal"
-                            android:drawableStart="@drawable/ic_eye"
-                            android:drawableTint="@color/light_grey"
-                            android:drawablePadding="5dp"
-                            android:padding="5dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_visibility"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="8.05km"
+                            android:orientation="vertical"
                             android:layout_gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
+                            android:layout_weight="1"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sunrise"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_sunrise"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="7:13 am"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            app:tint="@color/light_grey"
+                            android:src="@drawable/ic_uv_index"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            >
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sunset"
+                                android:textColor="@color/light_grey"
+                                android:layout_gravity="center_horizontal"
+                                android:drawableStart="@drawable/ic_cloud"
+                                android:drawableTint="@color/light_grey"
+                                android:drawablePadding="5dp"
+                                android:padding="5dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_sunset"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="6:30 pm"
+                                android:layout_gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="20sp"
+                                android:textStyle="bold"/>
+
+
+                        </LinearLayout>
+
 
 
                     </LinearLayout>
+
+
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/transparent"
-                    android:layout_weight="1"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp"
-                        android:id="@+id/rain_container"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Rain"
-                            android:textColor="@color/light_grey"
-                            android:layout_gravity="center_horizontal"
-                            android:drawableStart="@drawable/ic_humidity"
-                            android:drawableTint="@color/light_grey"
-                            android:drawablePadding="5dp"
-                            android:padding="5dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_rain"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="3.16"
-                            android:layout_gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/transparent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp"
-                    android:id="@+id/snow_container"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Snow"
-                        android:textColor="@color/light_grey"
-                        android:layout_gravity="center_horizontal"
-                        android:drawableStart="@drawable/ic_pressure"
-                        android:drawableTint="@color/light_grey"
-                        android:drawablePadding="5dp"
-                        android:padding="5dp"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_snow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="1015.9 mb"
-                        android:layout_gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-
-
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/transparent"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="5dp"
-                    android:padding="10dp"
-                    >
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sunrise"
-                            android:textColor="@color/light_grey"
-                            android:layout_gravity="center_horizontal"
-                            android:drawablePadding="5dp"
-                            android:padding="5dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_sunrise"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="7:13 am"
-                            android:layout_gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
-                        android:layout_gravity="center"
-                        app:tint="@color/light_grey"
-                        android:src="@drawable/ic_uv_index"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        >
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sunset"
-                            android:textColor="@color/light_grey"
-                            android:layout_gravity="center_horizontal"
-                            android:drawableStart="@drawable/ic_cloud"
-                            android:drawableTint="@color/light_grey"
-                            android:drawablePadding="5dp"
-                            android:padding="5dp"
-                            />
-
-                        <TextView
-                            android:id="@+id/tv_sunset"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="6:30 pm"
-                            android:layout_gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-
-                    </LinearLayout>
 
 
 
-                </LinearLayout>
 
 
-            </com.google.android.material.card.MaterialCardView>
+        </ScrollView>
 
-
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressbar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:progressTint="@color/white"
+            android:indeterminateTint="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
 
 
-
-    </ScrollView>
-
-    <ProgressBar
-        android:id="@+id/progressbar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:progressTint="@color/white"
-        android:indeterminateTint="@color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"
-        />
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
