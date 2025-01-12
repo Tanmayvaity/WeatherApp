@@ -42,6 +42,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.SocketException
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZoneId
@@ -125,7 +126,7 @@ class WeatherFragment : Fragment() {
                     if(location!=null){
                         val lat = location.latitude
                         val long = location.longitude
-                        Log.d(TAG, "lat $lat long $long")
+                        Log.i(TAG, "lat $lat long $long")
                         fetchData(lat,long)
                     }else{
                         Toast.makeText(requireContext(),"turn on the location of your device",Toast.LENGTH_SHORT).show()
@@ -180,6 +181,14 @@ class WeatherFragment : Fragment() {
                Toast.makeText(requireContext(),"No Internet Connection",Toast.LENGTH_SHORT).show()
             }
             Log.e(TAG,"No internet Connection")
+            return null
+        }catch (e:SocketException){
+            withContext(Dispatchers.Main){
+                binding.progressbar.isVisible = false
+                binding.refresh.isRefreshing = false
+                Toast.makeText(requireContext(),"Something wrong with internet connection",Toast.LENGTH_SHORT).show()
+            }
+            Log.e(TAG,"Something wrong with internet connection")
             return null
         }catch (e: HttpException){
             withContext(Dispatchers.Main){
