@@ -27,8 +27,8 @@ import com.example.weatherapp.viewmodels.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private val mainActivityViewModel: MainActivityViewModel by viewModels()
+     lateinit var binding: ActivityMainBinding
+     val mainActivityViewModel: MainActivityViewModel by viewModels()
     private lateinit var networkRequest: NetworkRequest
     private lateinit var networkCallback: NetworkCallback
     private var lastValidityState = false

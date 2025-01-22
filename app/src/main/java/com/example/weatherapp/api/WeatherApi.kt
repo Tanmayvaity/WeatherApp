@@ -11,5 +11,7 @@ interface WeatherApi {
     suspend fun getWeather(
         @Query("lat") lat:Double,
         @Query("lon") lon:Double,
-        @Query("appid")apiKey:String):Response<Weather>
+        @Query("appid")apiKey:String): Response<Weather>
+
+
 }

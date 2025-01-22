@@ -18,15 +18,47 @@
         app:layout_constraintTop_toTopOf="parent"
         android:backgroundTint="@color/white_smoke"
         android:hint="Find Locations"
-
         />
 
     <com.google.android.material.search.SearchView
-        android:id="@+id/location_search_view"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:backgroundTint="@color/white_smoke"
+        android:id="@+id/location_search_view"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
         >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search For Locations &#128205;"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="18sp"
+                android:id="@+id/tv_search_for_location"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/rv_locations"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="invisible"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

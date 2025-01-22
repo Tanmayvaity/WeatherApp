@@ -28,6 +28,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.Keys
 import com.example.weatherapp.api.WeatherApiInstance
 import com.example.weatherapp.databinding.FragmentWeatherBinding
+import com.example.weatherapp.models.GeoCoding
 import com.example.weatherapp.models.Weather
 import com.example.weatherapp.viewmodels.WeatherFragmentViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -42,6 +43,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.io.IOException
+import java.io.Serializable
 import java.net.SocketException
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -107,10 +109,25 @@ class WeatherFragment : Fragment() {
 
         Log.d(TAG,"WeatherFragment:onViewCreated")
 
-        checkForPermissions(requireContext())
+        val geoCodingData : GeoCoding? = arguments?.getSerializable(LocationFragment.LOCATION_DATA,GeoCoding::class.java)
+
+
+        if(geoCodingData!=null){
+            val lat = geoCodingData.lat
+            val lon = geoCodingData.lon
+            fetchData(lat,lon)
+        }else{
+            checkForPermissions(requireContext())
+        }
 
         binding.refresh.setOnRefreshListener {
-            checkForPermissions(requireContext())
+            if(geoCodingData!=null){
+                val lat = geoCodingData.lat
+                val lon = geoCodingData.lon
+                fetchData(lat,lon)
+            }else{
+                checkForPermissions(requireContext())
+            }
         }
     }
 
@@ -154,13 +171,14 @@ class WeatherFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private  fun fetchData(lat:Double, long:Double){
         val supervisorJob = SupervisorJob()
-
-
         lifecycleScope.launch(Dispatchers.IO + supervisorJob) {
              val weatherInfo : Deferred<Weather?> = async {
                  startCoroutineToFetchData(lat, long, Keys.weatherApiKey)
              }
             weather = weatherInfo.await()
+            if(weather == null){
+                Log.d(TAG,"null")
+            }
             setWeatherData(weather)
         }
     }
@@ -173,6 +191,7 @@ class WeatherFragment : Fragment() {
             binding.refresh.isRefreshing = true
         }
         val response = try{
+
             WeatherApiInstance.api.getWeather(lat,long,apiKey)
         }catch (e:IOException){
             withContext(Dispatchers.Main){
