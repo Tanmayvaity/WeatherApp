@@ -26,6 +26,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.Keys
+import com.example.weatherapp.api.ApiResult
+import com.example.weatherapp.api.ApiStatus
 import com.example.weatherapp.api.WeatherApiInstance
 import com.example.weatherapp.databinding.FragmentWeatherBinding
 import com.example.weatherapp.models.GeoCoding
@@ -42,6 +44,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import retrofit2.Response
 import java.io.IOException
 import java.io.Serializable
 import java.net.SocketException
@@ -172,70 +175,101 @@ class WeatherFragment : Fragment() {
     private  fun fetchData(lat:Double, long:Double){
         val supervisorJob = SupervisorJob()
         lifecycleScope.launch(Dispatchers.IO + supervisorJob) {
-             val weatherInfo : Deferred<Weather?> = async {
+             val defferedApiResult : Deferred<ApiResult<Weather>> = async {
+                 withContext(Dispatchers.Main){
+                     toggleRefresh(true)
+                 }
                  startCoroutineToFetchData(lat, long, Keys.weatherApiKey)
              }
-            weather = weatherInfo.await()
-            if(weather == null){
-                Log.d(TAG,"null")
+//            weather = weatherInfo.await()
+//            if(weather == null){
+//                Log.d(TAG,"null")
+//            }
+
+            val apiResult = defferedApiResult.await()
+
+
+            when(apiResult.status){
+                ApiStatus.SUCCESS -> {
+                    setWeatherData(apiResult.data)
+                    Log.d(TAG,"${apiResult.data}")
+                }
+                ApiStatus.INTERNET_TURNED_OFF->{
+                    Log.e(TAG,"No internet Connection")
+                    Log.e(TAG,"${apiResult.message}")
+                    Toast.makeText(requireContext(),"No internet connection",Toast.LENGTH_SHORT).show()
+
+                }
+                ApiStatus.INTERNET_NOT_WORKING->{
+                    Log.e(TAG,"Something wrong with internet connection")
+                    Log.e(TAG,"${apiResult.message}")
+                    Toast.makeText(requireContext(),"Internet not working",Toast.LENGTH_SHORT).show()
+
+                }
+                ApiStatus.HTTP_CODE_ERROR ->{
+                    Log.e(TAG,"Exception for an unexpected, non-2xx HTTP response")
+                    Log.e(TAG,"${apiResult.message}")
+                    Toast.makeText(requireContext(),"non-2xx error",Toast.LENGTH_SHORT).show()
+
+                }
+                ApiStatus.ERROR -> {
+                    Log.e(TAG,"${apiResult.message}")
+                    Toast.makeText(requireContext(),"Something unexpected happened,please try again",Toast.LENGTH_SHORT).show()
+                }
             }
-            setWeatherData(weather)
+
+            withContext(Dispatchers.Main){
+                toggleRefresh(false)
+            }
+
+
+
         }
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun startCoroutineToFetchData(lat:Double, long:Double, apiKey:String):Weather?{
+    private suspend fun startCoroutineToFetchData(lat:Double, long:Double, apiKey:String):ApiResult<Weather>{
         var  weather : Weather? = null
-        withContext(Dispatchers.Main){
-            binding.progressbar.isVisible = false
-            binding.refresh.isRefreshing = true
-        }
-        val response = try{
 
-            WeatherApiInstance.api.getWeather(lat,long,apiKey)
+        val apiResult = try{
+            val data = WeatherApiInstance.api.getWeather(lat,long,apiKey)
+            ApiResult<Weather>(
+                status = ApiStatus.SUCCESS,
+                data= data.body()
+            )
         }catch (e:IOException){
-            withContext(Dispatchers.Main){
-                binding.progressbar.isVisible = false
-                binding.refresh.isRefreshing = false
-               Toast.makeText(requireContext(),"No Internet Connection",Toast.LENGTH_SHORT).show()
-            }
             Log.e(TAG,"No internet Connection")
-            return null
+            ApiResult<Weather>(
+                status = ApiStatus.INTERNET_TURNED_OFF,
+                message = e.message
+            )
         }catch (e:SocketException){
-            withContext(Dispatchers.Main){
-                binding.progressbar.isVisible = false
-                binding.refresh.isRefreshing = false
-                Toast.makeText(requireContext(),"Something wrong with internet connection",Toast.LENGTH_SHORT).show()
-            }
             Log.e(TAG,"Something wrong with internet connection")
-            return null
+            ApiResult<Weather>(
+                status = ApiStatus.INTERNET_NOT_WORKING,
+                message = e.message
+            )
         }catch (e: HttpException){
-            withContext(Dispatchers.Main){
-                binding.progressbar.isVisible = false
-                binding.refresh.isRefreshing = false
-            }
             Log.e(TAG,"Exception for an unexpected, non-2xx HTTP response")
-            return null
+            ApiResult<Weather>(
+                status = ApiStatus.HTTP_CODE_ERROR,
+                message = e.message
+            )
+        }catch(e:Exception){
+            ApiResult<Weather>(
+                status = ApiStatus.ERROR,
+                message = e.message
+            )
         }
-        if(response.isSuccessful && response.body()!=null){
-            Log.d(TAG,"${response.raw().request.url}")
-             weather = response.body()
-            Log.d(TAG,"$weather")
-            setWeatherData(weather)
-            withContext(Dispatchers.Main){
-                binding.llContainer.isVisible = true
-                binding.tvToolbar.isVisible = true
-            }
-        }else{
-            Log.e(TAG,"Response not successful")
-        }
-        withContext(Dispatchers.Main){
-            binding.progressbar.isVisible = false
-            binding.refresh.isRefreshing = false
-        }
-        return weather
+        return apiResult
     }
 
+    private fun toggleRefresh(toggle:Boolean){
+        binding.refresh.isRefreshing = toggle
+        binding.llContainer.isVisible = !toggle
+        binding.tvToolbar.isVisible = !toggle
+    }
 
 
     private suspend fun setWeatherData(weather: Weather?) {
