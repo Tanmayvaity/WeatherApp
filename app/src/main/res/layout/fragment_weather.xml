@@ -21,7 +21,9 @@
             android:layout_height="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
 
             <TextView
                 android:visibility="gone"
@@ -37,6 +39,18 @@
                 android:id="@+id/tv_toolbar"
                 />
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:checked="false"
+                android:button="@drawable/bookmark_state_selector"
+                app:buttonTint="@color/white"
+                android:buttonTint="@color/white"
+                android:id="@+id/cb_bookmark"
+                />
+
+
         </androidx.appcompat.widget.Toolbar>
 
         <ScrollView
@@ -47,11 +61,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tb_weather"
             app:layout_constraintBottom_toBottomOf="parent"
+
             >
 
             <LinearLayout
                 android:id="@+id/ll_container"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

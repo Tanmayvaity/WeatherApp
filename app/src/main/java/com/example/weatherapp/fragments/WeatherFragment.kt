@@ -1,6 +1,7 @@
 package com.example.weatherapp.fragments
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -13,7 +14,9 @@ import android.provider.Settings
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -32,6 +35,7 @@ import com.example.weatherapp.api.WeatherApiInstance
 import com.example.weatherapp.databinding.FragmentWeatherBinding
 import com.example.weatherapp.models.GeoCoding
 import com.example.weatherapp.models.Weather
+import com.example.weatherapp.sheets.ActionBottomSheetFragment
 import com.example.weatherapp.viewmodels.WeatherFragmentViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -103,6 +107,7 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -132,6 +137,25 @@ class WeatherFragment : Fragment() {
                 checkForPermissions(requireContext())
             }
         }
+
+
+        binding.cbBookmark.setOnTouchListener(object:OnTouchListener{
+            @SuppressLint("ClickableViewAccessibility")
+            override fun onTouch(view: View?, event: MotionEvent?): Boolean {
+                if(event?.action == MotionEvent.ACTION_DOWN){
+                    val aboutBottomSheet = ActionBottomSheetFragment()
+
+                    val fm = childFragmentManager
+                    aboutBottomSheet.show(fm,"AboutBottomSheetFragment")
+                    return true
+                }
+                return false
+
+            }
+
+
+        })
+
     }
 
     private fun checkForPermissions(context: Context) {
@@ -269,6 +293,7 @@ class WeatherFragment : Fragment() {
         binding.refresh.isRefreshing = toggle
         binding.llContainer.isVisible = !toggle
         binding.tvToolbar.isVisible = !toggle
+        binding.cbBookmark.isVisible = !toggle
     }
 
 
