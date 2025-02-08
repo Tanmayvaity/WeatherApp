@@ -26,6 +26,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.weatherapp.Keys
@@ -144,7 +145,9 @@ class WeatherFragment : Fragment() {
             override fun onTouch(view: View?, event: MotionEvent?): Boolean {
                 if(event?.action == MotionEvent.ACTION_DOWN){
                     val aboutBottomSheet = ActionBottomSheetFragment()
-
+                    val args = Bundle()
+                    args.putBoolean("isChecked",binding.cbBookmark.isChecked)
+                    aboutBottomSheet.arguments = args
                     val fm = childFragmentManager
                     aboutBottomSheet.show(fm,"AboutBottomSheetFragment")
                     return true
@@ -154,6 +157,14 @@ class WeatherFragment : Fragment() {
             }
 
 
+        })
+
+        childFragmentManager.setFragmentResultListener("checkboxStatus",viewLifecycleOwner,object:
+            FragmentResultListener {
+            override fun onFragmentResult(requestKey: String, result: Bundle) {
+                val cbBookmarkCheckedStatus = result.getBoolean("isChecked")
+                binding.cbBookmark.isChecked = cbBookmarkCheckedStatus
+            }
         })
 
     }
@@ -215,6 +226,7 @@ class WeatherFragment : Fragment() {
 
             when(apiResult.status){
                 ApiStatus.SUCCESS -> {
+                    weather = apiResult.data
                     setWeatherData(apiResult.data)
                     Log.d(TAG,"${apiResult.data}")
                 }

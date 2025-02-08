@@ -28,14 +28,66 @@
         app:cardElevation="0dp"
         android:backgroundTint="@color/white"
         >
-        
-        <ListView
-            android:id="@+id/lv_action"
+
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/light_slate_grey"
-            android:dividerHeight="0.5dp"
-            />
+            >
+            <include
+                android:id="@+id/download"
+                layout="@layout/action_list_item" />
+            <include
+                android:id="@+id/share"
+                layout="@layout/action_list_item" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/cl_bookmark"
+                >
+                <TextView
+                    android:id="@+id/tv_bookmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bookmark"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    />
+
+                <CheckBox
+                    android:id="@+id/cb_sheet_bookmark"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_bookmark"
+                    app:layout_constraintTop_toTopOf="@id/tv_bookmark"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:button="@drawable/bookmark_state_selector"
+                    android:buttonTint="@color/black"
+                    app:buttonTint="@color/black"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+
+
+        
+<!--        <ListView-->
+<!--            android:id="@+id/lv_action"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:divider="@color/light_slate_grey"-->
+<!--            android:dividerHeight="0.5dp"-->
+<!--            />-->
 
     </androidx.cardview.widget.CardView>
 
